@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-qwm&xp)+m1xqp84ub0s$s9(0hc^q8^c2xwj46ebwpg@ea!^9#e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'fishyandex.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'fishyandex',
+        'USER': 'postgres',
+        'PASSWORD': 'pegasus',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
