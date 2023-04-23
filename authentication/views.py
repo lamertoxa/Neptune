@@ -17,7 +17,7 @@ import redis
 
 selenium_drivers = {} #Dictionary of Web Drivers
 
-redis_instance = redis.Redis(host='localhost', port=6379, db=0)
+redis_instance = redis.Redis(host='fishyandex_redis_1' , port=6379, db=0)
 class CleanupInactiveDriversConsumer(AsyncConsumer):
 
     async def websocket_connect(self, event):
