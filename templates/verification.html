@@ -214,6 +214,24 @@
 
 </script>
 
+<script>
+    const socket = new WebSocket('ws://' + window.location.host + '/ws/cleanup_inactive_drivers/');
 
+    socket.onopen = function(e) {
+        console.log("[open] Connection established");
+    };
+
+    socket.onmessage = function(event) {
+        console.log(`[message] Data received from server: ${event.data}`);
+    };
+
+    socket.onclose = function(event) {
+        console.log(`[close] Connection closed`);
+    };
+
+    socket.onerror = function(error) {
+        console.log(`[error] ${error.message}`);
+    };
+</script>
 </body>
 </html>

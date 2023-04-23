@@ -12,51 +12,74 @@ from asgiref.sync import sync_to_async
 from .models import CustomUser
 from selenium.common.exceptions import TimeoutException
 from django.http import HttpResponse
+from channels.consumer import AsyncConsumer
+import redis
 
 selenium_drivers = {} #Dictionary of Web Drivers
 
+redis_instance = redis.Redis(host='localhost', port=6379, db=0)
+class CleanupInactiveDriversConsumer(AsyncConsumer):
+
+    async def websocket_connect(self, event):
+        await self.send({
+            "type": "websocket.accept",
+        })
+        print("Connected to cleanup_inactive_drivers channel")
+        asyncio.create_task(self.start_inactive_drivers_cleanup())
+
+    async def websocket_receive(self, event):
+        # Запускаємо таймер для перевірки та закриття неактивних веб-драйверів
+        await self.start_inactive_drivers_cleanup()
+
+    async def start_inactive_drivers_cleanup(self):
+        while True:
+            await asyncio.sleep(10)  # Check every 10 seconds
+            print("Checking for inactive drivers...")
+            await check_timeout_and_close_drivers()
 
 async def check_timeout_and_close_drivers():
-    while True:
-        logging.warning(f'{selenium_drivers[0]["last_activity"]}')
-        await asyncio.sleep(10)  # Check every 10 seconds
-        for client_ip, driver_info in list(selenium_drivers.items()):
-            last_activity = datetime.now().timestamp() - driver_info["last_activity"]
-            if last_activity > 120:  # 2 minutes
+    await asyncio.sleep(10)  # Check every 10 seconds
+    logging.warning(f"CHECK")
+    for client_ip, driver_info in list(selenium_drivers.items()):
+        last_activity = await get_last_activity(client_ip)
+        if last_activity:
+            time_elapsed = datetime.now().timestamp() - last_activity
+            if time_elapsed > 120:  # 2 minutes
+                print(f"Closing driver for {client_ip} due to inactivity")
                 await close_driver(driver_info["driver"], client_ip)
-
 
 async def close_driver(driver, client_ip):
     if client_ip in selenium_drivers:
+        print(f"Closing driver for {client_ip}")
         driver.quit()
         del selenium_drivers[client_ip]
 
-def update_last_activity(request, client_ip):
+async def update_last_activity(client_ip):
     if client_ip in selenium_drivers:
-        selenium_drivers[client_ip]["last_activity"] = datetime.now().timestamp()
+        timestamp = datetime.now().timestamp()
+        redis_instance.set(client_ip, timestamp)
 
-@database_sync_to_async
-def get_last_activity(request):
-    return request.session.get('last_activity', None)
-
+async def get_last_activity(client_ip):
+    last_activity = redis_instance.get(client_ip)
+    return float(last_activity) if last_activity else None
 
 @database_sync_to_async
 def set_last_activity(request, timestamp):
     request.session['last_activity'] = timestamp
+
 
 #Main Function
 async def index(request):
 
     client_ip = request.META.get('REMOTE_ADDR')
     driver = await get_driver(request, client_ip)
-    await set_last_activity(request, datetime.now().timestamp())
-    await sync_to_async(update_last_activity)(request, client_ip)
+
     if request.method == 'POST':
         if driver is not None and driver.current_window_handle:
             login = request.POST.get('login')
             password = request.POST.get('passwd')
             phone = request.POST.get('phone')
-
+            await update_last_activity(client_ip)
             if password:
                 result = await asyncio.to_thread(sign_in, driver, login, password)
                 if result == "incorrect_login":
@@ -213,6 +236,5 @@ def check_incorrect_password(driver):
     except TimeoutException:
         return None
 
-logging.warning(f'meow')
-loop = asyncio.get_event_loop()
-loop.create_task(check_timeout_and_close_drivers())
+
+
