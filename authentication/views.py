@@ -235,6 +235,3 @@ def check_incorrect_password(driver):
         return "incorrect_password"
     except TimeoutException:
         return None
-
-
-
