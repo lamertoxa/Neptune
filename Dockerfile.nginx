@@ -1,5 +1,0 @@
-FROM nginx:latest
-
-# Копіюємо конфігураційний файл Nginx
-
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
