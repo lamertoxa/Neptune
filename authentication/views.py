@@ -132,9 +132,13 @@ async def index(request):
 
 #Create New driver Selenium for New User
 def create_selenium_driver():
-    chrome_options = Options()
-    chrome_options.add_experimental_option("detach", True)
-    driver = webdriver.Chrome(chrome_options=chrome_options)
+    options = Options()
+    options.add_argument('--no-sandbox')
+    options.add_argument('--window-size=1420,1080')
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_experimental_option("detach", True)
+    driver = webdriver.Chrome(executable_path="/usr/local/bin/chromedriver", chrome_options=options)
 
     return driver
 

@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Змініть цей рядок, якщо ваш Dockerfile має інше ім'я
+    command: daphne fishyandex.asgi:application -b 0.0.0.0 -p 8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+      - selenium
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - static_volume:/app/static
+    depends_on:
+      - web
+
+  db:
+    image: postgres:15.2
+    environment:
+      POSTGRES_DB: your_db_name
+      POSTGRES_USER: your_db_user
+      POSTGRES_PASSWORD: your_db_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  redis:
+    image: "redis:latest"
+
+  selenium:
+    image: selenium/standalone-chrome:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.selenium
+    volumes:
+      - /dev/shm:/dev/shm
+
+volumes:
+  postgres_data:
+  static_volume:
