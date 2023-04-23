@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': 'fishyandex',
         'USER': 'postgres',
         'PASSWORD': 'pegasus',
-        'HOST': 'localhost',
+        'HOST': 'fishyandex_db_1',
         'PORT': '5432',
     }
 }
