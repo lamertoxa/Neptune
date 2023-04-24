@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'fishyandex.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'fishyandex',
+        'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'pegasus',
         'HOST': 'fishyandex_db_1',
