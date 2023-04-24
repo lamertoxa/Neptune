@@ -9,7 +9,7 @@ COPY . /app
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
-
+RUN apt-get update && apt-get install -y curl
 # Install system dependencies for Chrome and ChromeDriver
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
