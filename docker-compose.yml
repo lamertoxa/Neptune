@@ -29,9 +29,9 @@ services:
   db:
     image: postgres:15.2
     environment:
-      POSTGRES_DB: your_db_name
-      POSTGRES_USER: your_db_user
-      POSTGRES_PASSWORD: your_db_password
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pegasus
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 
