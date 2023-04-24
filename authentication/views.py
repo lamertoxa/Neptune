@@ -148,7 +148,7 @@ def open_yandex_passport(driver):
 #Actions performed for authorization
 def sign_in(driver, login, password):
     open_yandex_passport(driver)
-    username_login = WebDriverWait(driver, 3).until(
+    username_login = WebDriverWait(driver, 6).until(
         EC.presence_of_element_located((By.NAME, 'login'))
     )
     login_submit = driver.find_element(By.ID, "passp:sign-in")
@@ -156,7 +156,7 @@ def sign_in(driver, login, password):
     login_submit.click()
 
     try:
-        username_password = WebDriverWait(driver, 3).until(
+        username_password = WebDriverWait(driver, 6).until(
             EC.presence_of_element_located((By.NAME, 'passwd')))
         password_submit = driver.find_element(By.ID, "passp:sign-in")
         username_password.send_keys(password)
@@ -206,7 +206,7 @@ async def handle_sms_verification(request):
 
 def check_success(driver):
     try:
-        WebDriverWait(driver, 3).until(
+        WebDriverWait(driver, 6).until(
             EC.presence_of_element_located((By.CLASS_NAME, "UserID-Avatar"))
         )
         return "success"
@@ -215,7 +215,7 @@ def check_success(driver):
 
 def check_sms_code(driver):
     try:
-        WebDriverWait(driver, 3).until(
+        WebDriverWait(driver, 6).until(
             EC.presence_of_element_located((By.CLASS_NAME, "passp-field-question"))
         )
         return "sms_code"
@@ -224,7 +224,7 @@ def check_sms_code(driver):
 
 def check_security_question(driver):
     try:
-        WebDriverWait(driver, 3).until(
+        WebDriverWait(driver, 6).until(
             EC.presence_of_element_located((By.CLASS_NAME, "auth-challenge__question"))
         )
         return "security_question"
@@ -233,7 +233,7 @@ def check_security_question(driver):
 
 def check_incorrect_password(driver):
     try:
-        WebDriverWait(driver, 3).until(
+        WebDriverWait(driver, 6).until(
             EC.presence_of_element_located((By.ID, "field:input-passwd:hint"))
         )
         return "incorrect_password"
