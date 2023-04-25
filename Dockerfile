@@ -1,6 +1,7 @@
 # Use an official Python runtime as a parent image
 FROM python:3.10-slim-buster
 
+RUN mkdir /app
 # Set the working directory to /app
 WORKDIR /app
 
@@ -48,11 +49,7 @@ RUN LATEST_CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapi
     chmod +x /usr/local/bin/chromedriver && \
     rm /tmp/chromedriver.zip
 
-# Make port 8000 available to the world outside this container
-EXPOSE 8000
-
 # Define environment variable
 ENV NAME World
 
 # Run app.py when the container launches
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

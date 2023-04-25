@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile  # Змініть цей рядок, якщо ваш Dockerfile має інше ім'я
     command: daphne fishyandex.asgi:application -b 0.0.0.0 -p 8000
+    container_name: web
     volumes:
       - .:/app
     ports:
