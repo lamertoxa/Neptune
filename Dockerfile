@@ -50,4 +50,5 @@ RUN LATEST_CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapi
     rm /tmp/chromedriver.zip
 
 
+
 # Run app.py when the container launches
