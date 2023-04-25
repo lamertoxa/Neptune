@@ -2,9 +2,7 @@ version: '3.9'
 
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile  # Змініть цей рядок, якщо ваш Dockerfile має інше ім'я
+    build: .
     command: daphne fishyandex.asgi:application -b 0.0.0.0 -p 8000
     container_name: web
     volumes:
@@ -17,8 +15,7 @@ services:
       - selenium
 
   nginx:
-    build:
-      context: .
+    image: nginx:1.19
     ports:
       - "80:80"
     volumes:

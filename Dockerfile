@@ -49,7 +49,5 @@ RUN LATEST_CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapi
     chmod +x /usr/local/bin/chromedriver && \
     rm /tmp/chromedriver.zip
 
-# Define environment variable
-ENV NAME World
 
 # Run app.py when the container launches
