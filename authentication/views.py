@@ -20,6 +20,11 @@ selenium_drivers = {} #Dictionary of Web Drivers
 redis_instance = redis.Redis(host='fishyandex_redis_1' , port=6379, db=0)
 class CleanupInactiveDriversConsumer(AsyncConsumer):
 
+
+
+    async def websocket_disconnect(self, event):
+        print("Disconnected from cleanup_inactive_drivers channel")
+
     async def websocket_connect(self, event):
         await self.send({
             "type": "websocket.accept",
