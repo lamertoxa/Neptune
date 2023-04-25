@@ -43,8 +43,6 @@ class CleanupInactiveDriversConsumer(AsyncConsumer):
             await check_timeout_and_close_drivers()
 
 async def check_timeout_and_close_drivers():
-    await asyncio.sleep(10)  # Check every 10 seconds
-    logging.warning(f"CHECK")
     for client_ip, driver_info in list(selenium_drivers.items()):
         last_activity = await get_last_activity(client_ip)
         if last_activity:
