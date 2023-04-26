@@ -61,7 +61,7 @@
                                             <div class="auth-challenge__call">
                                                 <div class="auth-challenge-descr"><p>Пожалуйста, подтвердите номер
                                                     телефона, который привязан к&nbsp;вашему аккаунту.</p></div>
-                                                <form action="{% url 'authentication:verification' %}" class="auth-challenge__call-form">
+                                                <form method="post" action="{% url 'authentication:verification' %}" class="auth-challenge__call-form">
                                                     {% csrf_token %}
                                                     <div class="auth-challenge-form-hint">Ваш номер телефона:<strong>{{phone_number}}</strong></div>
                                                     <div data-t="challenge_sumbit_phone-confirmation"

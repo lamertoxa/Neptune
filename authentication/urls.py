@@ -1,9 +1,10 @@
 
 from django.urls import path,include
-from .views import index,handle_sms_verification
+from .views import index,verification
 
 app_name = 'authentication'
 urlpatterns = [
     path('', index, name='index' ),
-    path('verification/', handle_sms_verification, name='verification')
+    path('verification/',verification,name='verification')
+
 ]
