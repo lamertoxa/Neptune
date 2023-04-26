@@ -1,7 +1,7 @@
 # Use an official Python runtime as a parent image
 FROM python:3.10-slim-buster
 
-ENV REDIS_HOST=fishyandex_db_1
+ENV REDIS_HOST=fishyandex_redis_1
 RUN mkdir /app
 # Set the working directory to /app
 WORKDIR /app
