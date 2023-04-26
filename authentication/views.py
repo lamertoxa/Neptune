@@ -15,10 +15,10 @@ from selenium.common.exceptions import TimeoutException
 from django.http import HttpResponse
 from channels.consumer import AsyncConsumer
 import redis
-
+import os
 selenium_drivers = {}  # Dictionary of Web Drivers
 
-redis_instance = redis.Redis(host='fishyandex_redis_1', port=6379, db=0)
+redis_instance = redis.Redis(host= os.environ.get('REDIS_HOST'), port=6379, db=0)
 
 
 class CleanupInactiveDriversConsumer(AsyncConsumer):
