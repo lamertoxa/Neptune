@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+fishyandex/local_settings.py
